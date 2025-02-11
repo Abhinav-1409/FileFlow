@@ -14,7 +14,7 @@ FileFlow is a powerful and easy-to-use web application for managing files effici
 
 ## Tech Stack
 
-- **Frontend**: React.js, Tailwind CSS
+- **Frontend**: React.js, Tailwind CSS, Next.js
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB
 - **Authentication**: Google OAuth

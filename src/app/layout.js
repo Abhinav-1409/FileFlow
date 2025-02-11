@@ -3,6 +3,7 @@ import "./globals.css";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import connectDB from "../services/connection";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,6 +21,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  connectDB();
   return (
     <html lang="en">
       <body
