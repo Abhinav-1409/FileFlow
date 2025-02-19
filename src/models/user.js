@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import {createHash, randomBytes} from "crypto";
-import createToken from "../utils/createToken";
+import { createToken } from "../utils/token";
 
 const userSchema = new Schema({
     name: {

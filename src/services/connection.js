@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const uri = "mongodb+srv://PostHive:PostHiveDev@data.5veo4.mongodb.net/FileFlow?retryWrites=true&w=majority&appName=data";
+const uri = process.env.MONGO_URI;
 async function connectDB(){
     await mongoose
     .connect(uri)

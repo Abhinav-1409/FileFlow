@@ -33,9 +33,9 @@ const Signup = () => {
   const [message, setMessage] = useState("");
 
   return (
-    <div className="flex justify-center items-center h-screen bg-[#f6fbe1]">
-      <div className="bg-[#27667B] p-10 rounded-lg shadow-lg h-3/5 w-2/5 flex justify-center items-center flex-col">
-        <h1 className="text-2xl font-semibold mb-5 text-[#a3e661] ">Sign Up</h1>
+    <div className="flex justify-center items-center h-screen bg-gray-50 shadow-md">
+      <div className="bg-gray-100 p-10 rounded-lg h-3/5 w-2/5 flex justify-center items-center flex-col shadow-md">
+        <h1 className="text-2xl font-semibold mb-5 text-gray-700 ">Sign Up</h1>
         <form ref={formRef}
           className="w-2/3 flex justify-center flex-col items-center"
           onSubmit={handleSubmit(onSubmit)}
@@ -43,7 +43,7 @@ const Signup = () => {
           <div className="mb-5 w-full">
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-[#DDEB9D]"
+              className="block text-sm font-medium text-gray-700"
             >
               Email
             </label>
@@ -71,14 +71,14 @@ const Signup = () => {
           <div className="mb-5 w-full">
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-[#DDEB9D]"
+              className="block text-sm font-medium text-gray-700"
             >
               Name
             </label>
             <input
               id="name"
               type="text"
-              className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#143D60] bg-gray-200"
+              className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#2f3841] bg-gray-200"
               {...register("name", {
                 required: "Password is required",
               })}
@@ -93,14 +93,14 @@ const Signup = () => {
           <div className="mb-5 w-full relative">
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-[#DDEB9D]"
+              className="block text-sm font-medium text-gray-700"
             >
               Password
             </label>
             <input
               id="password"
               type={hiddenPassword ? "password" : "text"}
-              className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#143D60] bg-gray-200"
+              className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#2f3841] bg-gray-200"
               {...register("password", {
                 required: "Password is required",
                 minLength: {
@@ -129,7 +129,7 @@ const Signup = () => {
           </div>
           <button
             type="submit"
-            className="bg-[#143D60] hover:bg-[#21374a] text-white p-2 rounded-lg w-1/3"
+            className="bg-gray-500 hover:bg-gray-700 text-white p-2 rounded-lg w-1/3"
           >
             SignUp
           </button>
