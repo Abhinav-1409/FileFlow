@@ -1,10 +1,12 @@
 "use client";
 import { useState } from "react";
-
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 const Dashboard = () => {
-  const user = { name: "Abhinav", email: "abhinav@mail.com" };
+  const {data: session } = useSession();
+  const user = session ? session.user : '';
+  console.log(session)
   const urls = [
     { title: "He1", url: "https://example.com" },
     { title: "He1", url: "https://google.com" },
@@ -21,10 +23,8 @@ const Dashboard = () => {
   ];
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-  // Calculate total pages
   const totalPages = Math.ceil(urls.length / itemsPerPage);
-
-  // Get current page items
+  
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = urls.slice(indexOfFirstItem, indexOfLastItem);

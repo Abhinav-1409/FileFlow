@@ -3,11 +3,14 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import {signIn , signOut, useSession } from "next-auth/react";
+
+import googleIcon from '../../assets/google.png';
 
 const Login = () => {
 
   const router = useRouter();
-
+  const {data : session } = useSession();
   const {
     register,
     handleSubmit,
@@ -114,8 +117,12 @@ const Login = () => {
               Login
             </button>
           </form>
-          {error && <p className="text-red-500 mt-5">{error}</p>}
+          <div className="flex text-center mt-1">
+          ----------or Login with----------
         </div>
+        <Image src={googleIcon} width={20} height={20} alt="Google SignIn" onClick={() => signIn('google')} className="mt-2 cursor-pointer"></Image>
+          {error && <p className="text-red-500 mt-5">{error}</p>}
+        </div>  
       </div>
       <script src="https://apis.google.com/js/platform.js" async defer></script>
     </div>
