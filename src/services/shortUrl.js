@@ -1,7 +1,7 @@
 "use server"
 import {  randomBytes } from 'crypto';
 import FileUrls from '../models/files';
-import { verifyToken } from '../utils/token';
+import tokenUtils from '../utils/token';
 
 const generateShortUrl = ()=> {
     const short = randomBytes(6);
@@ -12,7 +12,7 @@ const generateShortUrl = ()=> {
 const shortUrl = async function (request) {
     const req = await request.json();
     const token = req.cookies.get('uid');
-    const userId = verifyToken(token)?.id || null;
+    const userId = tokenUtils.verifyToken(token)?.id || null;
     let short;
     do{
         short = generateShortUrl();

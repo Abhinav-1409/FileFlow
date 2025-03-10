@@ -13,12 +13,12 @@ export default function Home() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const response = await fetch(`/api/shortUrl`,{
-      method: 'POST',
+    const response = await fetch(`/api/shortUrl`, {
+      method: "POST",
       body: JSON.stringify(data),
-      headers: { 'Content-Type': 'application/json'}
-    } )
-    if(!response.ok){
+      headers: { "Content-Type": "application/json" },
+    });
+    if (!response.ok) {
       const responseData = await response.json();
       setError(responseData.error);
     }
@@ -29,14 +29,7 @@ export default function Home() {
     {
       id: 1,
       title: "Image Conversion",
-      content: (
-        <form
-          className="w-2/3 flex justify-center flex-col items-center"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <input id></input>
-        </form>
-      ),
+      content: "hello",
     },
     {
       id: 2,
@@ -52,16 +45,33 @@ export default function Home() {
           className="w-2/3 flex justify-center flex-col items-center"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <input
-          id='url'
-          type="text"
-          {...register("url", {
-            required: {
-              message: "Email is required",
-            },
-          })}
-          ></input>
-          <button type="submit">Submit</button>
+          <div className="mb-5 w-full">
+            <label
+              htmlFor="url"
+              className="block text-sm font-medium text-gray-700"
+            >
+              url
+            </label>
+            <input
+              id="url"
+              type="url"
+              className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#2f3841] bg-gray-200"
+              {...register("url", {
+                required: {
+                  message: "url is required",
+                },
+              })}
+            />
+            {errors.url && (
+              <span className="text-red-500 text-sm">{errors.url.message}</span>
+            )}
+          </div>
+          <button
+              type="submit"
+              className="bg-gray-500 hover:bg-gray-700 text-white p-2 rounded-lg w-1/3"
+            >
+              Submit
+            </button>
         </form>
       ),
     },

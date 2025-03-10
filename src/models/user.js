@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import {createHash, randomBytes} from "crypto";
-import { createToken } from "../utils/token";
+import tokenUtils from "../utils/token";
 
 const userSchema = new Schema({
     name: {
@@ -42,7 +42,7 @@ userSchema.static("validateUserLogin", async function (email, password){
     if( hashedPassword !== user.password){
         throw new Error("Incorrect Password");
     }
-    const token = createToken(user);
+    const token = tokenUtils.createToken(user);
     return token;
 });
 

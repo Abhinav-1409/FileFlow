@@ -11,6 +11,8 @@ export const authOptions = {
   callbacks: {
     async session({ session, token }) {
       session.user.id = token.sub;
+      console.log(session);
+      // session.provider = 'google';
       return session;
     },
   },

@@ -11,15 +11,10 @@ const fileSchema = new Schema({
         type: String,
         required: true,
     },
-    originalUrl: {
-        type: String,
-        required: true,      
+    url: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'shortUrls',
     },
-    shortUrl: {
-        type: String,
-        required: true,
-        unique: true,
-    }
 });
 
 const FileUrls = mongoose.model("fileUrls", fileSchema);
