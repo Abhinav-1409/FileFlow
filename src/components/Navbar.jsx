@@ -35,7 +35,7 @@ export default function Navbar() {
           onClick={() => {
             signOut();
           }
-          } className="m-1 p-2  shadow-md bg-gray-200 hover:bg-gray-300 rounded-xl text-lg font-semibold text-gray-700 hover:text-gray-900 ">
+          } className="cursor-pointer m-1 p-2  shadow-md bg-gray-200 hover:bg-gray-300 rounded-xl text-lg font-semibold text-gray-700 hover:text-gray-900 ">
           Logout
         </div>
         }

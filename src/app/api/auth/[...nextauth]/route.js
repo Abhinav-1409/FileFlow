@@ -1,8 +1,11 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import { NextResponse } from "next/server";
 
 import Users from "../../../../models/user";
+import tokenUtils from "@/utils/token";
 import CredentialsProvider from "next-auth/providers/credentials";
+import connectDB from "@/services/connection";
 
 export const authOptions = {
   providers: [
@@ -13,23 +16,17 @@ export const authOptions = {
         password: { label: "password", type: "password" },
       },
       async authorize(credentials) {
+        await connectDB();
         try {
+          console.log(credentials);
           const token = await Users.validateUserLogin(
             credentials.email,
             credentials.password
           );
-          const response = NextResponse.json(
-            { error: "success" },
-            { status: 200 }
-          );
-          response.cookies.set("uid", token, {
-            httpOnly: true,
-            secure: true,
-            path: "/",
-          });
-          return response;
+          const user = await tokenUtils.verifyToken(token);
+          return user;
         } catch (e) {
-          return NextResponse.json({error : e.message},{status : 400});
+          throw new Error(e);
         }
       },
     }),
@@ -39,14 +36,15 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, token }) {
+    async session({ session, token, user }) {
       session.user.id = token.sub;
-      console.log(session);
-      console.log(token);
       if (Users.findOne({ email: session.user.email })) {
         const sessionToken = Users.validateUserLogin;
       }
-      // session.provider = 'google';
+      if(user){
+        console.log(user);
+        session.user = user;
+      }
       return session;
     },
   },

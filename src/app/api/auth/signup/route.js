@@ -1,13 +1,14 @@
 "use server";
-import Users from "../../../models/user";
+import Users from '@/models/user';
+import connectDB from '../../../../services/connection';
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
+  await connectDB();
   const { email, password, name } = await request.json();
-  console.log(email,password,name);
+  // console.log(email,password,name);
   try {
     const user = await Users.create({ email: email, password: password, name: name });
-    console.log(user);
     return NextResponse.json(
       {
         message: "Successfully Registered. Login to Continue...",

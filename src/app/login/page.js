@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -11,6 +11,11 @@ const Login = () => {
 
   const router = useRouter();
   const {data : session } = useSession();
+  useEffect(() => {
+    if (session) {
+      router.push('/');
+    }
+  }, [session, router]);
   const {
     register,
     handleSubmit,
@@ -21,14 +26,14 @@ const Login = () => {
   const url = process.env.URL;
 
   const onSubmit = async (data) => {
-    const response = await fetch(`/api/login`,{
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: { 'Content-Type': 'application/json'}
-    } )
+    const response = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
     if(!response.ok){
-      const responseData = await response.json();
-      setError(responseData.error);
+      console.log(response);
+      setError(response.error);
     }
     router.push("/");
   };

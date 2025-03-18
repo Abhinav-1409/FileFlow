@@ -14,7 +14,7 @@ const Signup = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    const response = await fetch(`/api/signup`, {
+    const response = await fetch(`/api/auth/signup`, {
       method: 'POST',
       body: JSON.stringify(data),
       headers: { 'Content-Type': 'application/json' },

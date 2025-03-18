@@ -22,7 +22,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  connectDB();
+  // connectDB();
   return (
     <html lang="en">
       <body
