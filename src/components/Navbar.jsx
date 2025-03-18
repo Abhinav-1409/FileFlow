@@ -3,7 +3,7 @@ import React from "react";
 
 import Link from "next/link";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -32,11 +32,8 @@ export default function Navbar() {
           Dashboard
         </Link>}
         {isLoggedIn && <div
-          onClick={ async () => {
-              const response = await fetch(`/api/logout`, { method: 'POST',})
-              if(response.ok){
-                isLoggedIn = false;
-              }
+          onClick={() => {
+            signOut();
           }
           } className="m-1 p-2  shadow-md bg-gray-200 hover:bg-gray-300 rounded-xl text-lg font-semibold text-gray-700 hover:text-gray-900 ">
           Logout
