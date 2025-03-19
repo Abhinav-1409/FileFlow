@@ -28,17 +28,12 @@ export default function Home() {
   const items = [
     {
       id: 1,
-      title: "Image Conversion",
-      content: "hello",
-    },
-    {
-      id: 2,
       title: "Image Compression",
       content: "Form for Image Compression",
     },
-    { id: 3, title: "File Sharing", content: "Form for File Sharing" },
+    { id: 2, title: "File Sharing", content: "Form for File Sharing" },
     {
-      id: 4,
+      id: 3,
       title: "URL Shortening",
       content: (
         <form
@@ -74,11 +69,6 @@ export default function Home() {
             </button>
         </form>
       ),
-    },
-    {
-      id: 5,
-      title: "PDF Text Extraction",
-      content: "Form for PDF Text Extraction",
     },
   ];
 

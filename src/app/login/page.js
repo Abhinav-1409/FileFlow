@@ -26,6 +26,7 @@ const Login = () => {
   const url = process.env.URL;
 
   const onSubmit = async (data) => {
+    const {email, password} = data;
     const response = await signIn("credentials", {
       redirect: false,
       email,

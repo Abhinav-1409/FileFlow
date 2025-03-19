@@ -18,7 +18,6 @@ export const authOptions = {
       async authorize(credentials) {
         await connectDB();
         try {
-          console.log(credentials);
           const token = await Users.validateUserLogin(
             credentials.email,
             credentials.password
@@ -36,19 +35,22 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, token, user }) {
-      session.user.id = token.sub;
-      if (Users.findOne({ email: session.user.email })) {
-        const sessionToken = Users.validateUserLogin;
+    async jwt({ token, user }) {
+      if (user) {
+        token.user = user;
       }
-      if(user){
-        console.log(user);
-        session.user = user;
-      }
+      return token;
+    },
+    async session({ session, token }) {
+      if(token.user)
+        session.user = token.user;
       return session;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt",
+  },
 };
 
 const handler = NextAuth(authOptions);
