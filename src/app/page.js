@@ -4,6 +4,10 @@ import { ChevronDown } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 
+import ImageProcess from "@/components/ImageFeatures";
+import VideoProcess from "@/components/VideoFeatures";
+import Share from '@/components/Share';
+
 export default function Home() {
   const {
     register,
@@ -80,8 +84,8 @@ export default function Home() {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 space-y-4">
-      {items.map((item) => (
+    <div className="w-3/4 mx-auto m-1 space-y-4">
+      {/* {items.map((item) => (
         <div key={item.id} className="border rounded-lg shadow-md">
           <button
             onClick={() => toggle(item.id)}
@@ -102,7 +106,10 @@ export default function Home() {
             </div>
           )}
         </div>
-      ))}
+      ))} */}
+      <ImageProcess/>
+      <VideoProcess/>
+      <Share/>
     </div>
   );
 }
