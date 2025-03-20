@@ -9,7 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "cloudinary": "^2.5.1",
+    "cloudinary": "^2.6.0",
+    "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.475.0",
     "mongoose": "^8.10.0",

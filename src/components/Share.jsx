@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import uploadImage from "@/services/cloud";
 
 export default function Share() {
     const [file, setFile] = useState(null);
@@ -9,7 +10,7 @@ export default function Share() {
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
         if (selectedFile) {
-            if (selectedFile.size > 25 * 1024 * 1024) {
+            if (selectedFile.size > 10 * 1024 * 1024) {
                 setError("File exceeds maximum size of 25MB.");
                 setFile(null);
                 return;
@@ -32,6 +33,18 @@ export default function Share() {
         if (!file) {
             setError("Please select a file to share.");
             return;
+        }
+        const reader = new FileReader();
+        reader.readAsDataURL(file); // Convert file to Base64
+
+        reader.onloadend = async () => {
+            const base64data = reader.result;
+            const response = await uploadImage(base64data);
+            if (response.error) {
+                setError(response.error.message);
+                return;
+            }
+            console.log("File uploaded:", response);
         }
         // For demo purposes, use the object URL as the file URL.
         const fileUrl = URL.createObjectURL(file);
@@ -57,7 +70,7 @@ export default function Share() {
                             className="w-full border-gray-300 rounded-lg shadow-sm focus:ring-gray-500 focus:border-gray-500"
                         />
                         <span className="text-sm text-gray-500">
-                            Allowed file size: max 25MB
+                            Allowed file size: max 10MB for raw files and 25MB for images/videos.
                         </span>
                         {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                     </div>
