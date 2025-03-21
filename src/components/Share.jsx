@@ -1,17 +1,18 @@
 "use client";
 import { useState } from "react";
-import uploadImage from "@/services/cloud";
+import upload from "@/services/cloud";
+import shortUrl from "@/services/shortUrl";
 
 export default function Share() {
     const [file, setFile] = useState(null);
-    const [shortUrl, setShortUrl] = useState("");
+    const [url, setUrl] = useState("");
     const [error, setError] = useState("");
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
         if (selectedFile) {
             if (selectedFile.size > 10 * 1024 * 1024) {
-                setError("File exceeds maximum size of 25MB.");
+                setError("File exceeds maximum size of 10MB.");
                 setFile(null);
                 return;
             }
@@ -22,36 +23,39 @@ export default function Share() {
         }
     };
 
-    // Simulate API call to generate shortened URL
-    const shortenUrl = async (fileUrl) => {
-        // In a real app, call your backend here.
-        return "https://short.url/" + Math.random().toString(36).substring(2, 8);
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!file) {
             setError("Please select a file to share.");
             return;
         }
+        setError("");
         const reader = new FileReader();
-        reader.readAsDataURL(file); // Convert file to Base64
 
         reader.onloadend = async () => {
-            const base64data = reader.result;
-            const response = await uploadImage(base64data);
-            if (response.error) {
-                setError(response.error.message);
-                return;
+            try {
+                const base64data = reader.result;
+                const response = await upload(base64data);
+
+                if (response.error) {
+                    setError(response.error.message);
+                    return;
+                }
+                if (!response.url) {
+                    setError("Failed to retrieve file URL.");
+                    return;
+                }
+                const urlShorted = await shortUrl(response.url);
+                console.log("Shortened URL: ", urlShorted);
+                setUrl(urlShorted);
+            } catch (err) {
+                setError("An error occurred while uploading.");
+                console.error(err);
             }
-            console.log("File uploaded:", response);
-        }
-        // For demo purposes, use the object URL as the file URL.
-        const fileUrl = URL.createObjectURL(file);
-        const url = await shortenUrl(fileUrl);
-        setShortUrl(url);
-        URL.revokeObjectURL(fileUrl);
+        };
+        reader.readAsDataURL(file); 
     };
+
 
     return (
         <div className="p-16 bg-gray-100 flex flex-col items-center">
@@ -78,20 +82,20 @@ export default function Share() {
                         type="submit"
                         className="w-full bg-gray-800 text-white py-3 rounded-lg hover:bg-gray-700 transition"
                     >
-                        Share & Get Shortened URL
+                        Share
                     </button>
                 </form>
-                {shortUrl && (
+                {url && (
                     <div className="mt-6 p-4 bg-green-100 rounded">
                         <p className="text-green-800">
-                            Your shortened URL:{" "}
+                            Your File URL:{" "}
                             <a
-                                href={shortUrl}
+                                href={url}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="underline"
                             >
-                                {shortUrl}
+                                {url}
                             </a>
                         </p>
                     </div>

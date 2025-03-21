@@ -1,16 +1,16 @@
 "use server"
 import cloudinary from "../cloudinary";
 
-async function uploadImage(file) {
+async function upload(file) {
   try {
     const result = await cloudinary.uploader.upload(file, {
       folder: "FileFlow/share", // Optional
+      resource_type: 'raw'
     });
-    console.log("Image URL:", result.secure_url);
     return result;
   } catch (error) {
     console.error("Upload failed:", error);
   }
 }
 
-export default uploadImage;
+export default upload;
