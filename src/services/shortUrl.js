@@ -4,20 +4,29 @@ import ShortUrl from "../models/shortUrls";
 const url = "http://localhost:3000";
 import connectDB from "./connection";
 
+const generateRandomString = (length) => {
+  const randomString = randomBytes(length).toString("base64").slice(0, length);
+  return randomString;
+};
+
 const generateShortUrl = () => {
-  const short = randomBytes(6).toString("base64").slice(0, 6);
+  let short = "";
+  do {
+    short = randomBytes(6).toString("base64").slice(0, 6);
+    // console.log(short, typeof short);
+  } while (short.includes("/"));
   const shortUrl = `${url}/short/${short}`;
   return shortUrl;
 };
 
 const shortUrl = async function (originalUrl) {
-  let short;
+  let short = "";
   let existingUrl;
   await connectDB();
   do {
     short = generateShortUrl();
     existingUrl = await ShortUrl.findOne({ shortUrl: short }); // ✅ Await the DB call
-    console.log(existingUrl, short);
+    // console.log(existingUrl, short);
   } while (existingUrl != null);
   const newUrl = await ShortUrl.create({
     originalUrl,

@@ -30,30 +30,25 @@ export default function Share() {
             return;
         }
         setError("");
-        const reader = new FileReader();
+        try {
 
-        reader.onloadend = async () => {
-            try {
-                const base64data = reader.result;
-                const response = await upload(base64data);
-
-                if (response.error) {
-                    setError(response.error.message);
-                    return;
-                }
-                if (!response.url) {
-                    setError("Failed to retrieve file URL.");
-                    return;
-                }
-                const urlShorted = await shortUrl(response.url);
-                console.log("Shortened URL: ", urlShorted);
-                setUrl(urlShorted);
-            } catch (err) {
-                setError("An error occurred while uploading.");
-                console.error(err);
+            const response = await upload(file);
+            if (response.error) {
+                setError(response.error.message);
+                return;
             }
-        };
-        reader.readAsDataURL(file); 
+            if (!response.url) {
+                setError("Failed to retrieve file URL.");
+                return;
+            }
+            // console.log(response.url);
+            const urlShorted = await shortUrl(response.url);
+            // console.log("Shortened URL: ", urlShorted);
+            setUrl(urlShorted);
+        } catch (err) {
+            setError("An error occurred while uploading.");
+            console.error(err);
+        }
     };
 
 
