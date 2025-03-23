@@ -1,10 +1,11 @@
 import mongoose, { Schema } from "mongoose";
-import Users from "./user";
+import Users from "./user"; // Ensure this path is correct
+// console.log("Users model:", Users); // Debugging log
 
 const fileSchema = new Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: Users,
+        ref: "Users", // Matches the model name in user.js
         default: null,
     },
     title: {
@@ -13,9 +14,10 @@ const fileSchema = new Schema({
     },
     url: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'shortUrls',
+        ref: "shortUrls",
+        required: true,
     },
 });
 
-const FileUrls = mongoose.model("fileUrls", fileSchema);
+const FileUrls = mongoose.models.fileUrls || mongoose.model("fileUrls", fileSchema);
 export default FileUrls;

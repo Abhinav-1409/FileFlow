@@ -42,6 +42,17 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }) {
+      connectDB();
+      if(session.user){
+        let user = await Users.findOne({email: session.user.email});
+        if(!user){
+          user = await Users.create({name: session.user.name, email: session.user.email, password: "googleUser"});
+        }
+        // console.log(user);
+        session.user.id = user._id;
+        // console.log(session);
+        return session;
+      }
       if(token.user)
         session.user = token.user;
       return session;

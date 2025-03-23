@@ -13,7 +13,6 @@ const generateShortUrl = () => {
   let short = "";
   do {
     short = randomBytes(6).toString("base64").slice(0, 6);
-    // console.log(short, typeof short);
   } while (short.includes("/"));
   const shortUrl = `${url}/short/${short}`;
   return shortUrl;

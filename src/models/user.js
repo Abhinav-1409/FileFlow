@@ -46,5 +46,5 @@ userSchema.static("validateUserLogin", async function (email, password){
     return token;
 });
 
-const Users = mongoose.models.User || mongoose.model("User", userSchema);
+const Users = mongoose.models.Users || mongoose.model("Users", userSchema);
 export default Users;

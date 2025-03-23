@@ -2,11 +2,14 @@
 import { useState } from "react";
 import upload from "@/services/cloud";
 import shortUrl from "@/services/shortUrl";
+import { useSession } from "next-auth/react";
+import saveFile from "@/utils/saveFile";
 
 export default function Share() {
     const [file, setFile] = useState(null);
     const [url, setUrl] = useState("");
     const [error, setError] = useState("");
+    const { data: session } = useSession();
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
@@ -41,9 +44,15 @@ export default function Share() {
                 setError("Failed to retrieve file URL.");
                 return;
             }
-            // console.log(response.url);
             const urlShorted = await shortUrl(response.url);
-            // console.log("Shortened URL: ", urlShorted);
+            if(session){
+                console.log("session: ", session.user.id);
+                saveFile(session.user.id, file.name, urlShorted);
+            
+                // await connectDB();
+                // const userId = session.user.id;
+                // await FileUrls.create({user: userId,title: file.name,url: urlShorted});
+            }
             setUrl(urlShorted);
         } catch (err) {
             setError("An error occurred while uploading.");
