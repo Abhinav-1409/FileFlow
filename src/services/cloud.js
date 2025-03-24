@@ -35,7 +35,49 @@ export async function resize(data) {
   });
 
   cloudinary.uploader.destroy(uploadData.public_id);
- 
+
+  console.log(response);
+  return response.url;
+}
+
+export async function qualityChange(data) {
+  const uploadData = await upload(data.image);
+  // console.log(uploadData);
+  if (uploadData.error) return uploadData;
+
+  const response = await cloudinary.uploader.upload(uploadData.url, {
+    quality: data.quality,
+  });
+
+  cloudinary.uploader.destroy(uploadData.public_id);
+
+  // console.log(response);
+  return response.url;
+}
+
+export async function convertFormat(data) {
+  const uploadData = await upload(data.image);
+  // console.log(uploadData);
+  if (uploadData.error) return uploadData;
+
+  const response = await cloudinary.uploader.upload(uploadData.url, {
+    format: data.format,
+  });
+  cloudinary.uploader.destroy(uploadData.public_id);
+  // console.log(response);
+  return response.url;
+}
+
+export async function bgRemove(data) {
+  const uploadData = await upload(data.image);
+  console.log(uploadData);
+  if (uploadData.error) return uploadData;
+
+  const response = await cloudinary.uploader.upload(uploadData.url, {
+    background_removal: "cloudinary_ai",
+    format: "png",
+  });
+  cloudinary.uploader.destroy(uploadData.public_id);
   console.log(response);
   return response.url;
 }
