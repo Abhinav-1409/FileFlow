@@ -1,6 +1,7 @@
 "use server";
 import cloudinary from "../cloudinary";
-const upload = async (file) => {
+
+export async function upload(file) {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("upload_preset", "FileFlow"); // Public preset
@@ -20,5 +21,12 @@ const upload = async (file) => {
     console.error("Cloudinary Upload Error:", error);
     return { error: "Failed to upload file" };
   }
-};
-export default upload;
+}
+
+export async function resize(data) {
+  const response = await fetch(
+    `https://res.cloudinary.com/${process.env.CLOUD_NAME}/image/upload/w_${data.width},h_${data.height},${data.crop}/${data.image}`
+  );
+  console.log(response);
+  return response.url;
+}

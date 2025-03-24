@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { resize } from "../services/cloud";
 
 export default function ImageProcess() {
     const [selectedFeature, setSelectedFeature] = useState("resize"); // Track selected feature
@@ -10,7 +11,7 @@ export default function ImageProcess() {
     const [quality, setQuality] = useState(80);
     const [autoQuality, setAutoQuality] = useState(false); // Auto quality toggle
     const [format, setFormat] = useState("webp");
-    const [transformation, setTransformation] = useState("c_fill"); // New state for transformation option
+    const [transformation, setTransformation] = useState("c_fit"); // New state for transformation option
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
@@ -24,22 +25,16 @@ export default function ImageProcess() {
             setFile(null);
         }
     };
-
-    // useEffect for managing file preview and dimensions
     useEffect(() => {
         if (file) {
             const previewUrl = URL.createObjectURL(file);
             setPreview(previewUrl);
-
-            // Load image to get dimensions
             const img = new Image();
             img.onload = () => {
                 setWidth(img.width);
                 setHeight(img.height);
             };
             img.src = previewUrl;
-
-            // Cleanup the preview URL when file changes or component unmounts
             return () => {
                 URL.revokeObjectURL(previewUrl);
             };
@@ -49,8 +44,6 @@ export default function ImageProcess() {
             setHeight(300);
         }
     }, [file]);
-
-    // Clear file and preview when feature changes
     useEffect(() => {
         setFile(null);
         setPreview(null);
@@ -60,6 +53,19 @@ export default function ImageProcess() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        switch(selectedFeature) {
+            case "resize":
+                const data = {
+                    image: file,
+                    width: width,
+                    height: height,
+                    crop: transformation,
+                }
+                resize(data).then((result) => {
+                    console.log(result);
+                    setPreview(result.url);
+                });
+        }
         
     };
 
