@@ -11,7 +11,7 @@ export default function ImageProcess() {
     const [quality, setQuality] = useState(80);
     const [autoQuality, setAutoQuality] = useState(false); // Auto quality toggle
     const [format, setFormat] = useState("webp");
-    const [transformation, setTransformation] = useState("c_fit"); // New state for transformation option
+    const [transformation, setTransformation] = useState("fit"); // New state for transformation option
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
@@ -63,10 +63,9 @@ export default function ImageProcess() {
                 }
                 resize(data).then((result) => {
                     console.log(result);
-                    setPreview(result.url);
+                    setPreview(result);
                 });
         }
-        
     };
 
     return (
@@ -165,16 +164,16 @@ export default function ImageProcess() {
                                         onChange={(e) => setTransformation(e.target.value)}
                                         className="w-full border-gray-300 rounded-lg shadow-sm focus:ring-gray-500 focus:border-gray-500"
                                     >
-                                        <option value="c_scale">
+                                        <option value="scale">
                                             Preserve Aspect Ratio (No distortion) - c_scale
                                         </option>
-                                        <option value="c_fit">
+                                        <option value="fit">
                                             Prevent Upscaling Beyond Original Size - c_fit
                                         </option>
-                                        <option value="c_pad">
+                                        <option value="pad">
                                             Add Background Instead of Stretching - c_pad
                                         </option>
-                                        <option value="c_fill">
+                                        <option value="fill">
                                             Make It Exactly Fit the Dimensions - c_fill
                                         </option>
                                     </select>

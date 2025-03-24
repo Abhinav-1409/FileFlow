@@ -24,9 +24,18 @@ export async function upload(file) {
 }
 
 export async function resize(data) {
-  const response = await fetch(
-    `https://res.cloudinary.com/${process.env.CLOUD_NAME}/image/upload/w_${data.width},h_${data.height},${data.crop}/${data.image}`
-  );
+  const uploadData = await upload(data.image);
+  console.log(uploadData);
+  if (uploadData.error) return uploadData;
+
+  const response = await cloudinary.uploader.upload(uploadData.url, {
+    width: data.width,
+    height: data.height,
+    crop: data.crop,
+  });
+
+  cloudinary.uploader.destroy(uploadData.public_id);
+ 
   console.log(response);
   return response.url;
 }
