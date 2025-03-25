@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { convertVideo, resizeVideo, trim } from "@/services/cloud";
 
 export default function VideoProcess() {
     const [selectedFeature, setSelectedFeature] = useState("resize");
@@ -10,8 +11,8 @@ export default function VideoProcess() {
     const [startTime, setStartTime] = useState(0);
     const [endTime, setEndTime] = useState(20);
     const [videoFormat, setVideoFormat] = useState("mp4");
-    const [subtitleFile, setSubtitleFile] = useState(null);
     const [videoDuration, setVideoDuration] = useState(0);
+    const [isProcessing, setIsProcessing] = useState(false);
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0];
@@ -23,15 +24,6 @@ export default function VideoProcess() {
             setFile(selectedFile);
         } else {
             setFile(null);
-        }
-    };
-
-    const handleSubtitleChange = (e) => {
-        const selectedSub = e.target.files[0];
-        if (selectedSub) {
-            setSubtitleFile(selectedSub);
-        } else {
-            setSubtitleFile(null);
         }
     };
 
@@ -73,13 +65,38 @@ export default function VideoProcess() {
         setStartTime(0);
         setEndTime(20);
         setVideoFormat("mp4");
-        setSubtitleFile(null);
         setVideoDuration(0);
     }, [selectedFeature]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        alert(`Processing ${selectedFeature}...`);
+        setIsProcessing(true);
+        switch(selectedFeature) {
+            case "resize":
+                const dataResize = { video: file, width, height, crop: "scale" };
+                resizeVideo(dataResize).then((result) => {
+                    setPreview(result);
+                    setIsProcessing(false);
+                });
+                break;
+            case "trim":
+                const dataTrim = { video: file, start: startTime, end: endTime };
+                trim(dataTrim).then((result) => {
+                    setPreview(result);
+                    setIsProcessing(false);
+                });
+                break;
+            case "convert":
+                const dataConvert = { video: file, format: videoFormat };
+                convertVideo(dataConvert).then((result) => {
+                    setPreview(result);
+                    setIsProcessing(false);
+                });
+                break;
+            default:
+                setIsProcessing(false);
+                console.log("Invalid feature selected");
+        }
     };
 
     return (
@@ -114,14 +131,6 @@ export default function VideoProcess() {
                         } hover:bg-gray-200 transition`}
                     >
                         Convert Format
-                    </button>
-                    <button
-                        onClick={() => setSelectedFeature("subtitle")}
-                        className={`px-6 py-3 rounded-lg border ${
-                            selectedFeature === "subtitle" ? "bg-gray-300" : "bg-gray-100"
-                        } hover:bg-gray-200 transition`}
-                    >
-                        Add Subtitles
                     </button>
                 </div>
 
@@ -172,8 +181,9 @@ export default function VideoProcess() {
                                 <button
                                     type="submit"
                                     className="w-full bg-gray-800 text-white py-3 rounded-lg hover:bg-gray-700 transition"
+                                    disabled={isProcessing}
                                 >
-                                    Submit
+                                    {isProcessing ? "Processing..." : "Submit"}
                                 </button>
                             </form>
                         )}
@@ -222,12 +232,15 @@ export default function VideoProcess() {
                                         />
                                     </div>
                                 </div>
-                                <p className="text-gray-500 text-sm">Video length: {Math.floor(videoDuration)} s</p>
+                                <p className="text-gray-500 text-sm">
+                                    Video length: {Math.floor(videoDuration)} s
+                                </p>
                                 <button
                                     type="submit"
                                     className="w-full bg-gray-800 text-white py-3 rounded-lg hover:bg-gray-700 transition"
+                                    disabled={isProcessing}
                                 >
-                                    Submit
+                                    {isProcessing ? "Processing..." : "Submit"}
                                 </button>
                             </form>
                         )}
@@ -260,65 +273,37 @@ export default function VideoProcess() {
                                         <option value="mp4">MP4</option>
                                         <option value="webm">WebM</option>
                                         <option value="gif">GIF</option>
+                                        <option value="mkv">MKV</option>
                                     </select>
                                 </div>
                                 <button
                                     type="submit"
                                     className="w-full bg-gray-800 text-white py-3 rounded-lg hover:bg-gray-700 transition"
+                                    disabled={isProcessing}
                                 >
-                                    Submit
-                                </button>
-                            </form>
-                        )}
-
-                        {selectedFeature === "subtitle" && (
-                            <form className="space-y-6" onSubmit={handleSubmit}>
-                                <div>
-                                    <label className="block text-gray-700 font-medium mb-2">
-                                        Upload Video
-                                    </label>
-                                    <input
-                                        type="file"
-                                        accept="video/*"
-                                        onChange={handleFileChange}
-                                        className="w-full border-gray-300 rounded-lg shadow-sm focus:ring-gray-500 focus:border-gray-500"
-                                    />
-                                    <span className="text-sm text-gray-500">
-                                        Allowed file size: max 25MB
-                                    </span>
-                                </div>
-                                <div>
-                                    <label className="block text-gray-700 font-medium mb-2">
-                                        Upload Subtitles (.srt)
-                                    </label>
-                                    <input
-                                        type="file"
-                                        accept=".srt"
-                                        onChange={handleSubtitleChange}
-                                        className="w-full border-gray-300 rounded-lg shadow-sm focus:ring-gray-500 focus:border-gray-500"
-                                    />
-                                    <span className="text-sm text-gray-500">
-                                        Optional subtitle file
-                                    </span>
-                                </div>
-                                <button
-                                    type="submit"
-                                    className="w-full bg-gray-800 text-white py-3 rounded-lg hover:bg-gray-700 transition"
-                                >
-                                    Submit
+                                    {isProcessing ? "Processing..." : "Submit"}
                                 </button>
                             </form>
                         )}
                     </div>
 
-                    {/* Right Side: Video Preview */}
-                    <div className="flex items-center justify-center">
+                    {/* Right Side: Video Preview & Download Option */}
+                    <div className="flex flex-col items-center justify-center">
                         {preview ? (
-                            <video
-                                src={preview}
-                                controls
-                                className="w-full max-w-md rounded-lg shadow-md border"
-                            />
+                            <>
+                                <video
+                                    src={preview}
+                                    controls
+                                    className="w-full max-w-md rounded-lg shadow-md border"
+                                />
+                                <a
+                                    href={preview}
+                                    download={file ? file.name : "video.mp4"}
+                                    className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-500 transition"
+                                >
+                                    Download Video
+                                </a>
+                            </>
                         ) : (
                             <p className="text-gray-500">No video selected</p>
                         )}

@@ -40,6 +40,24 @@ export async function resize(data) {
   return response.url;
 }
 
+export async function resizeVideo(data) {
+  const uploadData = await upload(data.video);
+  console.log(uploadData);
+  if (uploadData.error) return uploadData;
+
+  const response = await cloudinary.uploader.upload(uploadData.url, {
+    resource_type: "video",
+    width: data.width,
+    height: data.height,
+    crop: data.crop,
+  });
+
+  cloudinary.uploader.destroy(uploadData.public_id);
+
+  console.log(response);
+  return response.url;
+}
+
 export async function qualityChange(data) {
   const uploadData = await upload(data.image);
   // console.log(uploadData);
@@ -70,12 +88,42 @@ export async function convertFormat(data) {
 
 export async function bgRemove(data) {
   const uploadData = await upload(data.image);
-  console.log(uploadData);
+  // console.log(uploadData);
   if (uploadData.error) return uploadData;
 
   const response = await cloudinary.uploader.upload(uploadData.url, {
     background_removal: "cloudinary_ai",
     format: "png",
+  });
+  cloudinary.uploader.destroy(uploadData.public_id);
+  // console.log(response);
+  return response.url;
+}
+
+export async function trim(data){
+  const uploadData = await upload(data.video);
+  // console.log(uploadData);
+  if (uploadData.error) return uploadData;
+
+  const response = await cloudinary.uploader.upload(uploadData.url, {
+    resource_type: "video",
+    start_offset: data.start,
+    end_offset: data.end,
+    // format: "mp4",
+  });
+  cloudinary.uploader.destroy(uploadData.public_id);
+  // console.log(response);
+  return response.url;
+}
+
+export async function convertVideo(data){ 
+  const uploadData = await upload(data.video);
+  console.log(uploadData);
+  if (uploadData.error) return uploadData;
+
+  const response = await cloudinary.uploader.upload(uploadData.url, {
+    resource_type: "video",
+    format: data.format,
   });
   cloudinary.uploader.destroy(uploadData.public_id);
   console.log(response);
