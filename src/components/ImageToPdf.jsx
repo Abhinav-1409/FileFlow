@@ -102,7 +102,7 @@ export default function ImagesToPDF() {
                   className="w-full max-w-md rounded-lg shadow-md border mb-4"
                 />
                 <a
-                  href='api/download-pdf'
+                  href={pdfUrl}
                   download="images.pdf"
                   target="_blank"
                   className="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-600 transition"

@@ -130,16 +130,21 @@ export async function convertVideo(data) {
   return response.url;
 }
 
-export async function uploadMultipleImages(images) {
+export async function uploadMultipleImages(images, tag) {
+  // console.log(tag, typeof tag);
   let uploadedImages = [];
   for (const image of images) {
     try {
+      console.log(tag, typeof tag);
       const formData = new FormData();
       formData.append("file", image);
       formData.append("upload_preset", "FileFlow"); // Public preset
       formData.append("resource_type", "image"); // Accepts all file types
-      formData.append("public_id", image.name);
+      formData.append("public_id", `${image.name}-${Date.now()}`);
       formData.append("quality", "auto");
+      formData.append("tags", String(tag)); 
+
+      // console.log(formData);
       const response = await fetch(
         `https://api.cloudinary.com/v1_1/${process.env.CLOUD_NAME}/upload`,
         {
@@ -149,8 +154,8 @@ export async function uploadMultipleImages(images) {
       );
       const data = await response.json();
       // console.log(data);
-      uploadedImages.push(data.url);
-      console.log(`Uploaded: ${data.url}`);
+      uploadedImages.push(data);
+      // console.log(`Uploaded: ${data.url}`);
     } catch (e) {
       console.error("Cloudinary Upload Error:", e);
     }

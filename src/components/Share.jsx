@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { upload } from "@/services/cloud";
-import shortUrl from "@/services/shortUrl";
+import { shortUrl } from "@/services/shortUrl";
 import { useSession } from "next-auth/react";
 import saveFile from "@/utils/saveFile";
 

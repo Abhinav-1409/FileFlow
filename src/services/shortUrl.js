@@ -4,7 +4,7 @@ import ShortUrl from "../models/shortUrls";
 const url = "http://localhost:3000";
 import connectDB from "./connection";
 
-const generateRandomString = (length) => {
+export async function generateRandomString  (length) {
   const randomString = randomBytes(length).toString("base64").slice(0, length);
   return randomString;
 };
@@ -18,7 +18,7 @@ const generateShortUrl = () => {
   return shortUrl;
 };
 
-const shortUrl = async function (originalUrl) {
+export async function shortUrl (originalUrl) {
   let short = "";
   let existingUrl;
   await connectDB();
@@ -33,4 +33,4 @@ const shortUrl = async function (originalUrl) {
   });
   return newUrl.shortUrl;
 };
-export default shortUrl;
+// export default shortUrl;
