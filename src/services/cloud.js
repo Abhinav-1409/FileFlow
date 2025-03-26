@@ -100,7 +100,7 @@ export async function bgRemove(data) {
   return response.url;
 }
 
-export async function trim(data){
+export async function trim(data) {
   const uploadData = await upload(data.video);
   // console.log(uploadData);
   if (uploadData.error) return uploadData;
@@ -116,7 +116,7 @@ export async function trim(data){
   return response.url;
 }
 
-export async function convertVideo(data){ 
+export async function convertVideo(data) {
   const uploadData = await upload(data.video);
   console.log(uploadData);
   if (uploadData.error) return uploadData;
@@ -128,4 +128,32 @@ export async function convertVideo(data){
   cloudinary.uploader.destroy(uploadData.public_id);
   console.log(response);
   return response.url;
+}
+
+export async function uploadMultipleImages(images) {
+  let uploadedImages = [];
+  for (const image of images) {
+    try {
+      const formData = new FormData();
+      formData.append("file", image);
+      formData.append("upload_preset", "FileFlow"); // Public preset
+      formData.append("resource_type", "image"); // Accepts all file types
+      formData.append("public_id", image.name);
+      formData.append("quality", "auto");
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.CLOUD_NAME}/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const data = await response.json();
+      // console.log(data);
+      uploadedImages.push(data.url);
+      console.log(`Uploaded: ${data.url}`);
+    } catch (e) {
+      console.error("Cloudinary Upload Error:", e);
+    }
+  }
+  return uploadedImages;
 }
