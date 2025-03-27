@@ -6,20 +6,19 @@ import Link from "next/link";
 
 const Dashboard = () => {
   const { data: session } = useSession();
-  // console.log(session);
-  
   const [urls, setUrls] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  
   const itemsPerPage = 3;
 
   useEffect(() => {
-    if (session) {
-      console.log(session.user?.id);
+    if (session?.user?.id) {
       const fetchUserFiles = async () => {
-        const fetchedUrls = await getUserFiles(session.user?.id);
-        setUrls(fetchedUrls); 
-        console.log(fetchedUrls);
+        try {
+          const fetchedUrls = await getUserFiles(session.user.id);
+          setUrls(fetchedUrls);
+        } catch (error) {
+          console.error("Error fetching user files:", error);
+        }
       };
 
       fetchUserFiles();
@@ -27,10 +26,18 @@ const Dashboard = () => {
   }, [session]);
 
   const totalPages = Math.ceil(urls.length / itemsPerPage);
-
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = urls.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Render a loading state if session is undefined
+  if (!session) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center justify-start p-16 min-h-screen gap-10 bg-gray-100 border">
