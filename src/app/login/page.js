@@ -33,7 +33,7 @@ const Login = () => {
       password,
     });
     if(!response.ok){
-      console.log(response);
+      // console.log(response);
       setError(response.error);
     }
     router.push("/");

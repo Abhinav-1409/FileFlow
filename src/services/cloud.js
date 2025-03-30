@@ -25,7 +25,7 @@ export async function upload(file) {
 
 export async function resize(data) {
   const uploadData = await upload(data.image);
-  console.log(uploadData);
+  // console.log(uploadData);
   if (uploadData.error) return uploadData;
 
   const response = await cloudinary.uploader.upload(uploadData.url, {
@@ -36,13 +36,13 @@ export async function resize(data) {
 
   cloudinary.uploader.destroy(uploadData.public_id);
 
-  console.log(response);
+  // console.log(response);
   return response.url;
 }
 
 export async function resizeVideo(data) {
   const uploadData = await upload(data.video);
-  console.log(uploadData);
+  // console.log(uploadData);
   if (uploadData.error) return uploadData;
 
   const response = await cloudinary.uploader.upload(uploadData.url, {
@@ -54,7 +54,7 @@ export async function resizeVideo(data) {
 
   cloudinary.uploader.destroy(uploadData.public_id);
 
-  console.log(response);
+  // console.log(response);
   return response.url;
 }
 
@@ -118,7 +118,7 @@ export async function trim(data) {
 
 export async function convertVideo(data) {
   const uploadData = await upload(data.video);
-  console.log(uploadData);
+  // console.log(uploadData);
   if (uploadData.error) return uploadData;
 
   const response = await cloudinary.uploader.upload(uploadData.url, {
@@ -126,7 +126,7 @@ export async function convertVideo(data) {
     format: data.format,
   });
   cloudinary.uploader.destroy(uploadData.public_id);
-  console.log(response);
+  // console.log(response);
   return response.url;
 }
 
@@ -135,7 +135,7 @@ export async function uploadMultipleImages(images, tag) {
   let uploadedImages = [];
   for (const image of images) {
     try {
-      console.log(tag, typeof tag);
+      // console.log(tag, typeof tag);
       const formData = new FormData();
       formData.append("file", image);
       formData.append("upload_preset", "FileFlow"); // Public preset

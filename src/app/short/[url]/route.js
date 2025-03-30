@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import shortUrl from "@/models/shortUrls";
-const URL = "http://localhost:3000";
+const URL = process.env.URL;
 import connectDB from "@/services/connection";
 
 export async function GET(request, context ) {

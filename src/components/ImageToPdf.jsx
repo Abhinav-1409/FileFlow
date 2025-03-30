@@ -37,7 +37,7 @@ export default function ImagesToPDF() {
     setIsProcessing(true);
     
     const result = await createPdf(images);
-    console.log(result);
+    // console.log(result);
     setPdfUrl(result);
     setIsProcessing(false);
   };

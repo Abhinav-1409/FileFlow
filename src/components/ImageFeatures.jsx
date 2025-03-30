@@ -67,7 +67,7 @@ export default function ImageProcess() {
           crop: transformation,
         };
         resize(dataResize).then((result) => {
-          console.log(result);
+          // console.log(result);
           setPreview(result);
           setIsProcessing(false);
         });
@@ -78,7 +78,7 @@ export default function ImageProcess() {
           quality: autoQuality ? "auto" : quality,
         };
         qualityChange(dataQuality).then((result) => {
-          console.log(result);
+          // console.log(result);
           setPreview(result);
           setIsProcessing(false);
         });
@@ -89,7 +89,7 @@ export default function ImageProcess() {
           format: format,
         };
         convertFormat(dataConvert).then((result) => {
-          console.log(result);
+          // console.log(result);
           setPreview(result);
           setIsProcessing(false);
         });
@@ -99,7 +99,7 @@ export default function ImageProcess() {
           image: file,
         };
         bgRemove(dataRemove).then((result) => {
-          console.log(result);
+          // console.log(result);
           setPreview(result);
           setIsProcessing(false);
         });

@@ -1,7 +1,7 @@
 "use server";
 import { randomBytes } from "crypto";
 import ShortUrl from "../models/shortUrls";
-const url = "http://localhost:3000";
+const url = process.env.URL;
 import connectDB from "./connection";
 
 export async function generateRandomString  (length) {

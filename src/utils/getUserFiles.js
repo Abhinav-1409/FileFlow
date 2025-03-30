@@ -18,7 +18,7 @@ export default async function getUserFiles(userId) {
             })
         );
 
-        console.log(urls);
+        // console.log(urls);
         return urls;
     } catch (err) {
         console.error(err);
