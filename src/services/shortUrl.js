@@ -24,8 +24,7 @@ export async function shortUrl (originalUrl) {
   await connectDB();
   do {
     short = generateShortUrl();
-    existingUrl = await ShortUrl.findOne({ shortUrl: short }); // ✅ Await the DB call
-    // console.log(existingUrl, short);
+    existingUrl = await ShortUrl.findOne({ shortUrl: short }); 
   } while (existingUrl != null);
   const newUrl = await ShortUrl.create({
     originalUrl,
@@ -33,4 +32,3 @@ export async function shortUrl (originalUrl) {
   });
   return newUrl.shortUrl;
 };
-// export default shortUrl;

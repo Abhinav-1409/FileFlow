@@ -74,6 +74,22 @@ export default function Home() {
             Learn More
           </Link>
         </div>
+
+        {/* URL Shortening Card */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h2 className="text-xl font-bold text-gray-800 mb-4">
+            URL Shortening
+          </h2>
+          <p className="text-gray-600 mb-4">
+            Shorten long URLs quickly for easier sharing. Get a neat, compact URL to share anywhere.
+          </p>
+          <Link
+            href="/shortUrl"
+            className="inline-block bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-700 transition"
+          >
+            Learn More
+          </Link>
+        </div>
       </div>
     </div>
   );
