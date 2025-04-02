@@ -97,7 +97,8 @@ export async function bgRemove(data) {
   });
   cloudinary.uploader.destroy(uploadData.public_id);
   // console.log(response);
-  return response.url;
+  // https://res.cloudinary.com/dwadgr8xu/image/upload/nbqnepunmmiqusghas2t.png
+  return `https://res.cloudinary.com/${process.env.CLOUD_NAME}/image/upload/${response.public_id}.png`;
 }
 
 export async function trim(data) {
