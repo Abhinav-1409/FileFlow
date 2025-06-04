@@ -1,0 +1,4 @@
+# wrangler.toml
+name = "fileflow"
+compatibility_date = "2025-06-04"
+main = "./.vercel/output/static/_worker.js"
