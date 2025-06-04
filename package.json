@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "deploy": "npx wrangler deploy --assets=./dist --name=your-app-name --compatibility-date=2025-06-04",
     "start": "next start",
     "lint": "next lint"
   },
