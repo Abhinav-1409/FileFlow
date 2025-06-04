@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+   "build": "next build",
     "postbuild": "npx @cloudflare/next-on-pages",
-    "deploy": "npx wrangler deploy --assets=./dist --name=your-app-name --compatibility-date=2025-06-04",
+    "deploy": "npx wrangler deploy",
     "start": "next start",
     "lint": "next lint"
   },
