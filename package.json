@@ -1,0 +1,39 @@
+{
+  "name": "fileflow",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "postbuild": "npx @cloudflare/next-on-pages",
+    "deploy": "npx wrangler deploy --assets=./dist --name=your-app-name --compatibility-date=2025-06-04",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@ilovepdf/ilovepdf-nodejs": "^0.3.0",
+    "cloudinary": "^2.6.0",
+    "dotenv": "^16.4.7",
+    "fs": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.475.0",
+    "mongoose": "^8.10.0",
+    "multer": "^1.4.5-lts.2",
+    "next": "15.1.6",
+    "next-auth": "^4.24.11",
+    "next-cloudinary": "^6.16.0",
+    "next-connect": "^1.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.54.2",
+    "react-router-dom": "^7.1.5",
+    "@cloudflare/next-on-pages" : "*"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.6",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1"
+  }
+}
