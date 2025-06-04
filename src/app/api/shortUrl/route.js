@@ -1,6 +1,6 @@
 "use server"
 import shortUrls from "../../../models/shortUrls";
-import shortUrl from "../../../services/shortUrl";
+import { shortUrl } from "../../../services/shortUrl";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
